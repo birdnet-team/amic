@@ -20,12 +20,16 @@ attachment::att_amend_desc()
 
 ## Add modules ----
 ## Create a module infrastructure in R/
-golem::add_module(name = "name_of_module1", with_test = TRUE) # Name of the module
-golem::add_module(name = "name_of_module2", with_test = TRUE) # Name of the module
+golem::add_module(name = "species_card", with_test = FALSE) # Name of the module
+golem::add_module(name = "top_detections", with_test = FALSE) # Name of the module
 
 ## Add helper functions ----
 ## Creates fct_* and utils_*
-golem::add_fct("helpers", with_test = TRUE)
+golem::add_fct("convert_df_to_named_lists", with_test = FALSE)
+golem::add_fct("get_top_detections", with_test = FALSE)
+golem::add_fct("play_on_click_js", with_test = FALSE)
+
+
 golem::add_utils("helpers", with_test = TRUE)
 
 ## External resources
@@ -37,7 +41,7 @@ golem::add_sass_file("custom")
 
 ## Add internal datasets ----
 ## If you have data in your package
-usethis::use_data_raw(name = "my_dataset", open = FALSE)
+usethis::use_data_raw(name = "species_images", open = TRUE)
 
 ## Tests ----
 ## Add one line by test you want to create

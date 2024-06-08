@@ -51,9 +51,12 @@ rsconnect::deployApp(
     "data/",
     "NAMESPACE",
     "DESCRIPTION",
-    "app.R"
+    "app.R",
+    ".Renviron"
   ),
   appId = rsconnect::deployments(".")$appID,
   lint = FALSE,
-  forceUpdate = TRUE
+  forceUpdate = TRUE,
+  account = "oekofor",
+  server = "shinyapps.io"
 )

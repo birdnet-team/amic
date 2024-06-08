@@ -3,14 +3,40 @@
 #' @param request Internal parameter for `{shiny}`.
 #'     DO NOT REMOVE.
 #' @import shiny
+#' @import bslib
+#' @import bsicons
+#' @import echarts4r
 #' @noRd
 app_ui <- function(request) {
   tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),
     # Your application UI logic
-    fluidPage(
-      h1("amic")
+    page_fillable(
+      title = "amic",
+      fillable_mobile = TRUE,
+      # theme = bs_theme(
+      #   font_scale = 0.5
+      # ),
+      layout_column_wrap(
+        width = 1/2,
+        fill = FALSE,
+        value_box(
+          title = "Detektionen der letzten 24h",
+          value = "123",
+          theme = "purple",
+          height = "100px",
+          "Gesamt 283655000"
+        ),
+        value_box(
+          title = "Arten der leztzten 24h",
+          value = "6",
+          theme = "teal",
+          height = "100px",
+          shiny::markdown("Gesamt 28")
+        )
+      ),
+      mod_top_detections_ui("top_detections_1")
     )
   )
 }
@@ -31,6 +57,7 @@ golem_add_external_resources <- function() {
 
   tags$head(
     favicon(),
+    tags$link(rel = "stylesheet", href = "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.min.css"),
     bundle_resources(
       path = app_sys("app/www"),
       app_title = "amic"

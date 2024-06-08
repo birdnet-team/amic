@@ -1,0 +1,34 @@
+/* inst/app/www/custom.css */
+.detection_sound_image {
+  position: relative;
+  display: inline-block;
+}
+
+/*
+.detection_sound_image img {
+  width: 100%;
+  height: auto;
+  cursor: pointer;
+}
+*/
+
+.overlay_icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 48px;
+  color: rgba(255, 255, 255, 0.8); /* semi-transparent white */
+  background: rgba(0, 0, 0, 0.5); /* semi-transparent black background */
+  padding: 5px;
+  border-radius: 10%;
+  pointer-events: none;
+}
+
+.species_card.card_body {
+  padding-left: 0px;
+  padding-top: 0px;
+  padding-right: 0px;
+  padding-bottom: 0px;
+}
+

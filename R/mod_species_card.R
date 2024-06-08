@@ -10,14 +10,15 @@
 #' @import bslib
 #' @import bsicons
 #' @import glue
-mod_species_card_ui <- function(id,
-                                recorder_field_id,
-                                confidence,
-                                datetime,
-                                species_name_common,
-                                species_name_scientific,
-                                img_src,
-                                url_media) {
+mod_species_card_ui <- function(
+    id,
+    recorder_field_id,
+    confidence,
+    datetime,
+    species_name_common,
+    species_name_scientific,
+    img_src,
+    url_media) {
   ns <- NS(id)
 
   card_id <- ns("card")
@@ -45,9 +46,6 @@ mod_species_card_ui <- function(id,
         HTML('<i class="bi bi-play-fill"></i>')
       ),
     ),
-    tags$script(
-      HTML(play_on_click_js(player_id, species_image_id, icon_id))
-    ),
 
     # Species metadata chin
     card_body(
@@ -56,24 +54,21 @@ mod_species_card_ui <- function(id,
       # padding = 0,
       # gap = 0,
       layout_columns(
-        col_widths = c(10, 2),
         div(
           p(
             strong(species_name_common),
-            em(
-              paste0("(", species_name_scientific, ")"),
+            br(),
+            em(paste0("(", species_name_scientific, ")"),
               class = "text-muted"
             )
           ),
           p(
-            paste(
-              format(strptime(datetime, "%Y-%m-%d %H:%M:%S"), "%d %B %H:%M"),
-              "; Rekorder",
-              recorder_field_id
-            )
+            format(strptime(datetime, "%Y-%m-%d %H:%M:%S"), "%d.%m.%y %R"),
+            br(),
+            paste0("Rekorder #",recorder_field_id),
+            class = "text-muted"
           )
-        ),
-        p(confidence)
+        )
       )
     )
   ))
@@ -86,3 +81,4 @@ mod_species_card_server <- function(id, rv_detection) {
   moduleServer(id, function(input, output, session) {
   })
 }
+#
