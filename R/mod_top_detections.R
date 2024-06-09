@@ -8,10 +8,12 @@
 #'
 #' @importFrom shiny NS tagList
 #' @import ecopiapi
-#' @importFrom dplyr select left_join
+#' @importFrom dplyr select left_join mutate rowwise
 mod_top_detections_ui <- function(id) {
   ns <- NS(id)
   tagList(
+    # tags$script(src = "www/ogv.js"),
+    tags$script(src = "https://cdn.jsdelivr.net/npm/ogv/dist/ogv.js"),
     tags$script(src = "www/audio_player.js"),
     htmlOutput(ns("species_cards"))
   )
@@ -34,8 +36,15 @@ mod_top_detections_server <- function(id, project, n) {
       select(-species_code, -author)
     top_detections$id <- seq_len(nrow(top_detections)) # id is used for namespacing
 
-    golem::print_dev(top_detections)
-    golem::print_dev(top_detections$url_media)
+    # Convert audio files
+    top_detections <- top_detections |>
+      rowwise() |>
+      mutate(local_audio = convert_ogg_audio(url_media)) |>
+      mutate(local_audio_url = paste0("/tmp_path/", basename(local_audio))) |>
+      select(-url_media, -local_audio)
+
+    golem::message_dev(("TOP DETECTIONS"))
+    golem::print_dev(top_detections$local_audio_url)
 
     list_top_detections <- convert_df_to_named_lists(top_detections)
 

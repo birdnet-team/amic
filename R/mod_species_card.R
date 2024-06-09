@@ -9,7 +9,6 @@
 #' @importFrom shiny NS tagList
 #' @import bslib
 #' @import bsicons
-#' @import glue
 mod_species_card_ui <- function(
     id,
     recorder_field_id,
@@ -18,7 +17,7 @@ mod_species_card_ui <- function(
     species_name_common,
     species_name_scientific,
     img_src,
-    url_media) {
+    local_audio_url) {
   ns <- NS(id)
 
   card_id <- ns("card")
@@ -26,15 +25,17 @@ mod_species_card_ui <- function(
   icon_id <- ns("icon")
   species_image_id <- ns("species_image")
 
+  golem::message_dev("LOCAL Path")
+  golem::print_dev(local_audio_url)
 
   tagList(card(
     class = "species_card",
     fill = FALSE,
     id = card_id,
-    # thats the clickable image that plays sound
+    # that's the clickable image that plays sound
     div(
       class = "detection_sound_image",
-      tags$audio(id = player_id, src = url_media),
+      tags$audio(id = player_id, src = local_audio_url),
       tags$img(
         id = species_image_id,
         class = "img-fluid card-img-top",
@@ -47,7 +48,7 @@ mod_species_card_ui <- function(
       ),
     ),
 
-    # Species metadata chin
+    # Species metadata chain
     card_body(
       class = "species_card_body",
       fill = TRUE,
@@ -59,13 +60,13 @@ mod_species_card_ui <- function(
             strong(species_name_common),
             br(),
             em(paste0("(", species_name_scientific, ")"),
-              class = "text-muted"
+               class = "text-muted"
             )
           ),
           p(
             format(strptime(datetime, "%Y-%m-%d %H:%M:%S"), "%d.%m.%y %R"),
             br(),
-            paste0("Rekorder #",recorder_field_id),
+            paste0("Rekorder #", recorder_field_id),
             class = "text-muted"
           )
         )
@@ -73,6 +74,7 @@ mod_species_card_ui <- function(
     )
   ))
 }
+
 
 #' species_card Server Functions
 #'
