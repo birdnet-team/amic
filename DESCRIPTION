@@ -11,15 +11,15 @@ BugReports: https://github.com/BirdNETPLus/amic/issues
 Depends: 
     R (>= 2.10)
 Imports: 
+    av,
     bsicons,
     bslib,
     config (>= 0.3.1),
     dplyr,
     echarts4r,
     ecopiapi,
-    glue,
     golem (>= 0.4.1),
-    pkgload,
+    httr,
     shiny (>= 1.8.1.1)
 Encoding: UTF-8
 LazyData: true

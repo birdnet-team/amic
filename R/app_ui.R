@@ -55,6 +55,18 @@ golem_add_external_resources <- function() {
     app_sys("app/www")
   )
 
+  if (Sys.info()["sysname"] == "Darwin") {
+    addResourcePath(
+      "tmp_path", tempdir()
+    )
+  } else if (Sys.info()["sysname"] == "Linux") {
+    addResourcePath(
+      "tmp_path", "/dev/shm"
+    )
+  } else {
+    stop("Not sure where to put temp files in Windows")
+  }
+
   tags$head(
     favicon(),
     tags$link(rel = "stylesheet", href = "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.min.css"),
