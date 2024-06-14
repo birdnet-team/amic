@@ -18,7 +18,7 @@
 #' @noRd
 get_top_detection <- function(project, n) {
   detections_with_audio <- ecopiapi::get_detections(
-    order_bvy = "-datetime",
+    order_by = "-datetime",
     limit = 100,
     confidence__gte = 0.95,
     has_audio = TRUE,
