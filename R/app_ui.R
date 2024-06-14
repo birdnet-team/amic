@@ -28,24 +28,7 @@ app_ui <- function(request) {
           xxl: 1400px
         )"
       ),
-      layout_column_wrap(
-        width = 1/2,
-        fill = FALSE,
-        value_box(
-          title = "Detektionen der letzten 24h",
-          value = "123",
-          theme = "purple",
-          height = "100px",
-          "Gesamt 283655000"
-        ),
-        value_box(
-          title = "Arten der leztzten 24h",
-          value = "6",
-          theme = "teal",
-          height = "100px",
-          shiny::markdown("Gesamt 28")
-        )
-      ),
+      mod_valueboxes_detections_ui("valueboxes_detections_1"),
       mod_top_detections_ui("top_detections_1")
     )
   )
