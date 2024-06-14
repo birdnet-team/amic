@@ -25,10 +25,31 @@
   pointer-events: none;
 }
 
-.species_card.card_body {
-  padding-left: 0px;
+
+.species_card {
+  border-left-width: 0px;
+  border-left-style: solid;
+  border-top-width: 0px;
+  border-top-style: solid;
+  border-right-width: 0px;
+  border-right-style: solid;
+  border-bottom-style: solid;
+  border-bottom-width: 0px;
+}
+
+.body_sound_image {
   padding-top: 0px;
+  padding-left: 0px;
+  padding-bottom: 8px;
   padding-right: 0px;
-  padding-bottom: 0px;
+}
+
+.body_data {
+  margin-top:auto;
+  margin-bottom:auto;
+  flex:1 1 auto;
+  padding-left: 8px;
+  padding-bottom: 8px;
+  padding-right: 8px;
 }
 

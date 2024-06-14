@@ -10,6 +10,9 @@ function setUpAudioPlayer(playerId, iconId, imageId) {
   }
 
   speciesImage.addEventListener('click', function () {
+
+    console.log('Playing:', player.src);
+
     if (player.paused) {
       player.play();
       icon.innerHTML = '<i class="bi bi-pause-fill"></i>';

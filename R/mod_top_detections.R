@@ -12,8 +12,6 @@
 mod_top_detections_ui <- function(id) {
   ns <- NS(id)
   tagList(
-    # tags$script(src = "www/ogv.js"),
-    tags$script(src = "https://cdn.jsdelivr.net/npm/ogv/dist/ogv.js"),
     tags$script(src = "www/audio_player.js"),
     htmlOutput(ns("species_cards"))
   )
@@ -33,18 +31,14 @@ mod_top_detections_server <- function(id, project, n) {
     top_detections <- get_top_detection(project, n) |>
       left_join(birdnames) |>
       left_join(species_images) |>
-      select(-species_code, -author)
+      select(-species_code, -author) |>
+      # should fix an error in safari that complains about too many redirects
+      mutate(url_media = sub("http://", "https://", url_media))
     top_detections$id <- seq_len(nrow(top_detections)) # id is used for namespacing
 
-    # Convert audio files
-    top_detections <- top_detections |>
-      rowwise() |>
-      mutate(local_audio = convert_ogg_audio(url_media)) |>
-      mutate(local_audio_url = paste0("/tmp_path/", basename(local_audio))) |>
-      select(-url_media, -local_audio)
-
-    golem::message_dev(("TOP DETECTIONS"))
-    golem::print_dev(top_detections$local_audio_url)
+    golem::message_dev("TOP DETECTIONS")
+    golem::print_dev(top_detections)
+    golem::print_dev(top_detections$url_media)
 
     list_top_detections <- convert_df_to_named_lists(top_detections)
 
@@ -53,11 +47,11 @@ mod_top_detections_server <- function(id, project, n) {
     })
 
     output$species_cards <- renderUI({
-      layout_column_wrap(
-        width = "200px",
-        heigh = "400px",
-        fixed_width = FALSE,
-        heights_equal = "row",
+      layout_columns(
+        col_widths = breakpoints(
+          sm = c(6,6),
+          md = c(3,3,3,3)
+        ),
         !!!list_species_cards
       )
     })
