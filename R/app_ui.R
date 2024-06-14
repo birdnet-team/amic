@@ -15,9 +15,19 @@ app_ui <- function(request) {
     page_fillable(
       title = "amic",
       fillable_mobile = TRUE,
-      # theme = bs_theme(
-      #   font_scale = 0.5
-      # ),
+      theme = bs_theme(
+        base_font = font_google("Inter"),
+        font_scale = 0.8
+      ) |> bs_add_variables(
+        "grid-breakpoints" = "(
+          xs: 0px,
+          sm: 300px,
+          md: 500px,
+          lg: 992px,
+          xl: 1200px,
+          xxl: 1400px
+        )"
+      ),
       layout_column_wrap(
         width = 1/2,
         fill = FALSE,
@@ -54,18 +64,6 @@ golem_add_external_resources <- function() {
     "www",
     app_sys("app/www")
   )
-
-  if (Sys.info()["sysname"] == "Darwin") {
-    addResourcePath(
-      "tmp_path", tempdir()
-    )
-  } else if (Sys.info()["sysname"] == "Linux") {
-    addResourcePath(
-      "tmp_path", "/dev/shm"
-    )
-  } else {
-    stop("Not sure where to put temp files in Windows")
-  }
 
   tags$head(
     favicon(),

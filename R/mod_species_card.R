@@ -17,7 +17,7 @@ mod_species_card_ui <- function(
     species_name_common,
     species_name_scientific,
     img_src,
-    local_audio_url) {
+    url_media) {
   ns <- NS(id)
 
   card_id <- ns("card")
@@ -25,32 +25,32 @@ mod_species_card_ui <- function(
   icon_id <- ns("icon")
   species_image_id <- ns("species_image")
 
-  golem::message_dev("LOCAL Path")
-  golem::print_dev(local_audio_url)
-
   tagList(card(
     class = "species_card",
     fill = FALSE,
     id = card_id,
     # that's the clickable image that plays sound
-    div(
-      class = "detection_sound_image",
-      tags$audio(id = player_id, src = local_audio_url),
-      tags$img(
-        id = species_image_id,
-        class = "img-fluid card-img-top",
-        src = img_src
-      ),
+    card_body(
+      class = "body_sound_image",
       div(
-        id = icon_id,
-        class = "overlay_icon",
-        HTML('<i class="bi bi-play-fill"></i>')
+        class = "detection_sound_image",
+        tags$audio(id = player_id, src = url_media, type = "application/mp3"),
+        tags$img(
+          id = species_image_id,
+          class = "img-fluid card-img-top",
+          src = img_src
+        ),
+        div(
+          id = icon_id,
+          class = "overlay_icon",
+          HTML('<i class="bi bi-play-fill"></i>')
+        ),
       ),
     ),
 
     # Species metadata chain
     card_body(
-      class = "species_card_body",
+      class = "body_data",
       fill = TRUE,
       # padding = 0,
       # gap = 0,
@@ -59,9 +59,7 @@ mod_species_card_ui <- function(
           p(
             strong(species_name_common),
             br(),
-            em(paste0("(", species_name_scientific, ")"),
-               class = "text-muted"
-            )
+            em(species_name_scientific, class = "text-muted")
           ),
           p(
             format(strptime(datetime, "%Y-%m-%d %H:%M:%S"), "%d.%m.%y %R"),
