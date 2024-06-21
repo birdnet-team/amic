@@ -4,13 +4,15 @@
   display: inline-block;
 }
 
-/*
-.detection_sound_image img {
-  width: 100%;
-  height: auto;
-  cursor: pointer;
+/* does not work */
+.bslib-value-box .card-body {
+  padding-right: 0.1rem !important;
+  padding-top: 0.4rem !important;
+  padding-left: 0.4rem !important;
+  padding-bottom: 0.4rem !important;
 }
-*/
+
+
 
 .overlay_icon {
   position: absolute;
@@ -52,4 +54,3 @@
   padding-bottom: 8px;
   padding-right: 8px;
 }
-
