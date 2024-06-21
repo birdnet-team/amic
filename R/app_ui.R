@@ -16,7 +16,8 @@ app_ui <- function(request) {
       title = "amic",
       fillable_mobile = TRUE,
       theme = bs_theme(
-        base_font = font_google("Inter"),
+        # base_font = font_google("Inter"),
+        # heading_font = font_google("Inter", wght = 600, local = FALSE),
         font_scale = 0.8
       ) |> bs_add_variables(
         "grid-breakpoints" = "(
@@ -28,7 +29,7 @@ app_ui <- function(request) {
           xxl: 1400px
         )"
       ),
-      mod_valueboxes_detections_ui("valueboxes_detections_1"),
+      mod_summary_ui("valueboxes_detections_1"),
       mod_top_detections_ui("top_detections_1")
     )
   )
