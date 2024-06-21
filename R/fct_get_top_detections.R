@@ -17,14 +17,16 @@
 #' @importFrom dplyr group_by arrange desc slice ungroup slice_sample
 #' @noRd
 get_top_detection <- function(project, n) {
+
   detections_with_audio <- ecopiapi::get_detections(
     order_by = "-datetime",
     limit = 100,
-    confidence__gte = 0.95,
+    confidence__gte = 0.9,
     has_audio = TRUE,
     only = c("recorder_field_id", "species_code", "datetime", "confidence", "url_media"),
     project_name = project
   )
+
 
   detections_with_audio |>
     dplyr::filter(species_code != "image") |>
