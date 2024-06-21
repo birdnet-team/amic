@@ -13,6 +13,7 @@ mod_top_detections_ui <- function(id) {
   ns <- NS(id)
   tagList(
     tags$script(src = "www/audio_player.js"),
+    h2("Top Erkennungen anhören"),
     htmlOutput(ns("species_cards"))
   )
 }
@@ -36,9 +37,9 @@ mod_top_detections_server <- function(id, project, n) {
       mutate(url_media = sub("http://", "https://", url_media))
     top_detections$id <- seq_len(nrow(top_detections)) # id is used for namespacing
 
-    golem::message_dev("TOP DETECTIONS")
-    golem::print_dev(top_detections)
-    golem::print_dev(top_detections$url_media)
+    # golem::message_dev("TOP DETECTIONS")
+    # golem::print_dev(top_detections)
+    # golem::print_dev(top_detections$url_media)
 
     list_top_detections <- convert_df_to_named_lists(top_detections)
 
