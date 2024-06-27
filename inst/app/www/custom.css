@@ -15,15 +15,20 @@
 
 
 .overlay_icon {
+  width: 30px;
+  height: 30px;
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 48px;
-  color: rgba(255, 255, 255, 0.8); /* semi-transparent white */
-  background: rgba(0, 0, 0, 0.5); /* semi-transparent black background */
-  padding: 5px;
-  border-radius: 10%;
+  bottom: 4%;
+  left: 4%;
+  /* transform: translate(10%, 10%); */
+  font-size: 20px;
+  color: rgba(53, 53, 53, 1);
+  background: rgba(255, 255, 255, 0.8);
+  padding: 0px;
+  border-radius: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   pointer-events: none;
 }
 
