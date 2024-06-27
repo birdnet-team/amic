@@ -211,7 +211,7 @@ mod_top10_birdnetpi_server <-
           ) |>
           e_grid(
             left = "2%",
-            right = "3%",
+            right = "4%",
             top = "14%",
             bottom = "1%"
           ) |>
