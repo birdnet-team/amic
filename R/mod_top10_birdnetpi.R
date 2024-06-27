@@ -63,6 +63,7 @@ mod_top10_birdnetpi_server <-
 
       # Calc data for Barchart ------------------------------------------------------------------------------------------
       top_dets_per_species <- reactive({
+        req(data_reactive())
         data_reactive() |>
           count(species_name_common) |>
           arrange(desc(n)) |>
@@ -73,8 +74,10 @@ mod_top10_birdnetpi_server <-
 
       # Calc Data for Time Heatmap ----------------------------------------------------------------------------------
       top_dets_per_hour <- reactive({
+        req(data_reactive())
+        req(top_dets_per_species())
         data_reactive() |>
-          filter(species_name_common %in% top_10_dets_per_species$species_name_common) |>
+          filter(species_name_common %in% top_dets_per_species()$species_name_common) |>
           mutate(hour_of_day = hour(datetime) |> as.numeric()) |>
           count(species_name_common, hour_of_day) |>
           # the following dance is done to interpolate to half hour values to make a nicer graph
@@ -114,13 +117,14 @@ mod_top10_birdnetpi_server <-
           }) |>
           ungroup() |>
           arrange(species_name_common) |>
-          left_join(select(top_10_dets_per_species, -n)) |>
+          left_join(select(top_dets_per_species(), -n)) |>
           arrange(species_level)
       })
 
 
       # BarChart --------------------------------------------------------------------------------------------------------
       output$barchart <- renderEcharts4r({
+        req(top_dets_per_species())
         top_dets_per_species() |>
           e_charts(n) |>
           e_bar(
@@ -169,6 +173,7 @@ mod_top10_birdnetpi_server <-
 
       # Time Heatmap PLot ----------------------------------------------------------------------------------------------
       output$activity_heatmap <- renderEcharts4r({
+        req(top_dets_per_hour())
         top_dets_per_hour() |>
           e_charts(hour_of_day) |>
           e_heatmap(species_level, n_interpol, label = list(show = FALSE)) |>
