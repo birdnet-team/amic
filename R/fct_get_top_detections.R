@@ -20,8 +20,8 @@ get_top_detection <- function(project, n) {
 
   detections_with_audio <- ecopiapi::get_detections(
     order_by = "-datetime",
-    limit = 100,
-    confidence__gte = 0.9,
+    limit = 1000,
+    confidence__gte = 0.99,
     has_audio = TRUE,
     only = c("recorder_field_id", "species_code", "datetime", "confidence", "url_media"),
     project_name = project
