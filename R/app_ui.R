@@ -29,7 +29,18 @@ app_ui <- function(request) {
           xxl: 1400px
         )"
       ),
-      mod_summary_ui("valueboxes_detections_1"),
+      card(
+        card_title("Erkannte Rufe und Gesänge", container = htmltools::h3),
+        layout_columns(
+          width = 1/2,
+          fill = FALSE,
+          mod_value_box_ui("box_today", "Heute", "purple", "120px", "120px", "150px"),
+          mod_value_box_ui("box_all", "Gesamt", "teal", "120px", "120px", "150px")
+        ),
+        min_height = "220px",
+        max_height = "250px"
+      ),
+      mod_top10_birdnetpi_ui("top10_birdnetpi_1"),
       mod_top_detections_ui("top_detections_1")
     )
   )
