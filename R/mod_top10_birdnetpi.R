@@ -86,34 +86,29 @@ mod_top10_birdnetpi_server <-
           # we just want to interpolate intermediate, made up values
           group_by(species_name_common) |>
           group_modify(~ {
-            if (nrow(.x) == 1) {
-              .x
-            } else {
-              inter <- .x |>
-                tidyr::complete(
-                  hour_of_day = seq(min(hour_of_day), max(hour_of_day), by = 1),
-                  fill = list(n = 0)
-                ) |>
-                # then fill in half hour values for interpolation per group
-                tidyr::complete(hour_of_day = seq(min(hour_of_day), max(hour_of_day), by = 0.5)) |>
-                # now fill in cells where the value does not change (this wouldnt be an issue if we'd use approx(method = "linear"))
-                mutate(
-                  lag_n = lag(n),
-                  lead_n = lead(n),
-                  n = if_else(is.na(n) & lag_n == lead_n, lead_n, n)
-                ) |>
-                select(-lag_n, -lead_n) |>
-                # Then interpolate those NA values using splines to give it some natural feel
-                mutate(n_interpol = spline(hour_of_day, n, xout = hour_of_day, method = "natural")$y) |>
-                # spliones may become negative and that doesnt make sense in this case
-                mutate(n_interpol = if_else(n_interpol < 0, 0, round(n_interpol, 1))) |>
-                # fill in zeros for every full hour, where we actually hav recordings
-                tidyr::complete(
-                  hour_of_day = seq(1, 24, by = 0.5),
-                  fill = list(n = NA)
-                )
-              inter
-            }
+            .x |>
+              tidyr::complete(
+                hour_of_day = seq(min(hour_of_day), max(hour_of_day), by = 1),
+                fill = list(n = 0)
+              ) |>
+              # then fill in half hour values for interpolation per group
+              tidyr::complete(hour_of_day = seq(min(hour_of_day), max(hour_of_day), by = 0.5)) |>
+              # now fill in cells where the value does not change (this wouldnt be an issue if we'd use approx(method = "linear"))
+              mutate(
+                lag_n = lag(n),
+                lead_n = lead(n),
+                n = if_else(is.na(n) & lag_n == lead_n, lead_n, n)
+              ) |>
+              select(-lag_n, -lead_n) |>
+              # Then interpolate those NA values using splines to give it some natural feel
+              mutate(n_interpol = spline(hour_of_day, n, xout = hour_of_day, method = "natural")$y) |>
+              # spliones may become negative and that doesnt make sense in this case
+              mutate(n_interpol = if_else(n_interpol < 0, 0, round(n_interpol, 1))) |>
+              # fill in zeros for every full hour, where we actually hav recordings
+              tidyr::complete(
+                hour_of_day = seq(1, 24, by = 0.5),
+                fill = list(n = NA)
+              )
           }) |>
           ungroup() |>
           arrange(species_name_common) |>
@@ -175,12 +170,14 @@ mod_top10_birdnetpi_server <-
       output$activity_heatmap <- renderEcharts4r({
         req(top_dets_per_hour())
         top_dets_per_hour() |>
+          #mutate(n_scaled = e_scale(n_interpol), .by = species_level) |>
           e_charts(hour_of_day) |>
           e_heatmap(species_level, n_interpol, label = list(show = FALSE)) |>
           e_visual_map(
             n,
             type = "continuous",
             min = 1,
+            # scale = NULL,
             color = rev(
               c(
                 "#fcde9c",
@@ -241,23 +238,23 @@ mod_top10_birdnetpi_server <-
           #     symbolSize = 12
           #   ),
           #   symbol = list("none"),
-          #   lineStyle = list(width = 0),
-          #   animation = FALSE
-          # ) |>
-          e_mark_line(
-            silent = TRUE,
-            label = list(show = FALSE),
-            data = list(
-              xAxis = sunlighttimes$sunrise,
-              symbol = symbol_sunrise,
-              symbolOffset = c(0, -30), # c(0, 300),
-              symbolKeepAspect = TRUE,
-              symbolSize = 17
-            ),
-            symbol = list("none"),
-            lineStyle = list(width = 0),
-            animation = FALSE
-          ) |>
+        #   lineStyle = list(width = 0),
+        #   animation = FALSE
+        # ) |>
+        e_mark_line(
+          silent = TRUE,
+          label = list(show = FALSE),
+          data = list(
+            xAxis = sunlighttimes$sunrise,
+            symbol = symbol_sunrise,
+            symbolOffset = c(0, -30), # c(0, 300),
+            symbolKeepAspect = TRUE,
+            symbolSize = 17
+          ),
+          symbol = list("none"),
+          lineStyle = list(width = 0),
+          animation = FALSE
+        ) |>
           e_mark_line(
             silent = TRUE,
             label = list(show = FALSE),
@@ -283,10 +280,10 @@ mod_top10_birdnetpi_server <-
           #     symbolSize = 12
           #   ),
           #   symbol = list("none"),
-          #   lineStyle = list(width = 0),
-          #   animation = FALSE
-          # ) |>
-          identity()
+        #   lineStyle = list(width = 0),
+        #   animation = FALSE
+        # ) |>
+        identity()
       })
     })
   }
