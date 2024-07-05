@@ -13,7 +13,7 @@ mod_top_detections_ui <- function(id) {
   ns <- NS(id)
   tagList(
     tags$script(src = "www/audio_player.js"),
-    h3("Höre Rufe und Gesänge"),
+    h3("Rufe und Gesänge anhören"),
     htmlOutput(ns("species_cards"))
   )
 }
