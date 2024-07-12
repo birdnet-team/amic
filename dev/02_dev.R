@@ -18,6 +18,8 @@
 ## install.packages('attachment') # if needed.
 attachment::att_amend_desc()
 
+usethis::use_dev_package(package = "ecopiapi", type = "Imports", remote = "OekoFor/ecopiapi@0.2.0")
+
 ## Add modules ----
 ## Create a module infrastructure in R/
 golem::add_module(name = "species_card", with_test = FALSE) # Name of the module

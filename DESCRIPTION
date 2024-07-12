@@ -1,6 +1,6 @@
 Package: amic
 Title: Acoustic Monitoring in Chemnitz
-Version: 0.0.0.9000
+Version: 0.0.1
 Authors@R: 
     person("Felix", "Guenther", , "felix.guenther@informatik.tu-chemnitz.de", role = c("cre", "aut"))
 Description: Shiny app visualizing BirdNET detections from ecoPi in
@@ -16,7 +16,7 @@ Imports:
     config (>= 0.3.1),
     dplyr,
     echarts4r,
-    ecopiapi,
+    ecopiapi (>= 0.2.0),
     golem (>= 0.4.1),
     hms,
     lubridate,
@@ -29,3 +29,5 @@ Imports:
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.3
+Remotes:  
+    OekoFor/ecopiapi@0.2.0
