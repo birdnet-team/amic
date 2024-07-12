@@ -7,45 +7,77 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
+#' @import shinyjs
 
 # UI for the value box module
 mod_value_box_ui <- function(id, title, theme, height, min_height, max_height) {
   ns <- NS(id)
   tagList(
-    tags$head(tags$script(HTML(paste0('
-      $(document).on("click", "#', ns('value_box'), '", function() {
-        Shiny.setInputValue("', ns('value_box_clicked'), '", Math.random());
-      });
-    ')))),
-    value_box(
-      title = title,
-      value = textOutput(ns("value")),
-      theme = theme,
-      height = height,
-      min_height = min_height,
-      max_height = max_height,
-      id = ns("value_box"),
-      class = "value-box-clickable",
-      textOutput(ns("details"))
+    shinyjs::useShinyjs(),
+    tags$head(
+      tags$link(rel = "stylesheet", type = "text/css", href = "skeleton.css"),
+      tags$script(HTML(paste0('
+        $(document).on("click", "#', ns('value_box'), '", function() {
+          Shiny.setInputValue("', ns('value_box_clicked'), '", Math.random());
+        });
+      ')))
+    ),
+    div(
+      id = ns("loading_skeleton"),
+      class = "skeleton",
+      div(class = "skeleton-box"),
+      # div(class = "skeleton-title"),
+      # div(class = "skeleton-text"),
+      # div(class = "skeleton-text")
+    ),
+    hidden(
+      value_box(
+        title = title,
+        value = textOutput(ns("value")),
+        theme = theme,
+        height = height,
+        min_height = min_height,
+        max_height = max_height,
+        id = ns("value_box"),
+        class = "value-box-clickable",
+        textOutput(ns("details"))
+      )
     )
   )
 }
+
 
 # Server logic for the value box module
 mod_value_box_server <- function(id, data_reactive, data_title) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
+    data_loaded <- reactiveVal(FALSE)
 
-    # Render value and details
+    observe({
+      data <- data_reactive()
+      if (!is.null(data)) {
+      # if(FALSE) { # use this to show loading skeleton permanently
+        data_loaded(TRUE)
+        shinyjs::hide(id = "loading_skeleton")
+        shinyjs::show(id = "value_box")
+      } else {
+        data_loaded(FALSE)
+        shinyjs::show(id = "loading_skeleton")
+        shinyjs::hide(id = "value_box")
+      }
+    })
+
     output$value <- renderText({
+      req(data_reactive())
       sum(data_reactive()$species_count)
     })
+
     output$details <- renderText({
+      req(data_reactive())
       n_species <- unique(data_reactive()$species_code) |> length()
       sprintf("von %s Arten", n_species)
     })
 
-    # Show modal on click
     observeEvent(input$value_box_clicked, {
       showModal(
         modalDialog(
@@ -59,6 +91,7 @@ mod_value_box_server <- function(id, data_reactive, data_title) {
     })
   })
 }
+
 
 
 
