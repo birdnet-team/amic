@@ -23,13 +23,15 @@ attachment::att_amend_desc()
 golem::add_module(name = "species_card", with_test = FALSE) # Name of the module
 golem::add_module(name = "top_detections", with_test = FALSE) # Name of the module
 golem::add_module(name = "valueboxes_detections", with_test = FALSE)
+golem::add_module(name = "value_box", with_test = FALSE)
+golem::add_module(name = "reactable_detections", with_test = FALSE)
+golem::add_module(name = "top10_birdnetpi", with_test = FALSE)
+
 
 ## Add helper functions ----
 ## Creates fct_* and utils_*
 golem::add_fct("convert_df_to_named_lists", with_test = FALSE)
 golem::add_fct("get_top_detections", with_test = FALSE)
-golem::add_fct("play_on_click_js", with_test = FALSE)
-golem::add_fct("convert_ogg_audio", with_test = FALSE)
 
 
 golem::add_utils("helpers", with_test = TRUE)
