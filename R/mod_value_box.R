@@ -7,29 +7,6 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_value_box_ui <- function(id){
-  ns <- NS(id)
-  tagList(
-
-  )
-}
-
-#' value_box Server Functions
-#'
-#' @noRd
-mod_value_box_server <- function(id){
-  moduleServer( id, function(input, output, session){
-    ns <- session$ns
-
-  })
-}
-
-## To be copied in the UI
-# mod_value_box_ui("value_box_1")
-
-## To be copied in the server
-# mod_value_box_server("value_box_1")
-# R/mod_value_box.R
 
 # UI for the value box module
 mod_value_box_ui <- function(id, title, theme, height, min_height, max_height) {
@@ -82,3 +59,12 @@ mod_value_box_server <- function(id, data_reactive, data_title) {
     })
   })
 }
+
+
+
+## To be copied in the UI
+# mod_value_box_ui("value_box_1")
+
+## To be copied in the server
+# mod_value_box_server("value_box_1")
+# R/mod_value_box.R
