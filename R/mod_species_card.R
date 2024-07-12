@@ -24,6 +24,7 @@ mod_species_card_ui <- function(
   player_id <- ns("player")
   icon_id <- ns("icon")
   species_image_id <- ns("species_image")
+  spinner_id <- ns("spinner")
 
   tagList(card(
     class = "species_card",
@@ -45,6 +46,11 @@ mod_species_card_ui <- function(
           class = "overlay_icon",
           HTML('<i class="bi bi-play-fill"></i>')
         ),
+        div(
+          id = spinner_id,
+          class = "spinner",
+          style = "display: none;"
+        )
       ),
     ),
 
