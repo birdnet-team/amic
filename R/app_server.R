@@ -5,16 +5,26 @@
 #' @import shiny
 #' @import bslib
 #' @import pkgload
+#' @importFrom lubridate now floor_date with_tz round_date ymd_hms
+#' @importFrom dplyr select left_join mutate
 #' @noRd
 app_server <- function(input, output, session) {
   #
   project <- "pam_in_chemnitz"
   min_confidence <- 0.85
 
+  ## timezone of the project; could be retrieved from the recorder config
+  # project_timezone <- "Europe/Berlin"
+  ## there might be a mismatch when the shiny server runs on UTC but its past midnight at the recorder location
+  ## find midnight in UTC (DB server time) relative to prject timezone when shiny app runs on a server with an unknown time zone
+  # today <- now(tzone = project_timezone) |>
+  #   floor_date(unit = "day") |>
+  #   with_tz("UTC")
+
   # used to invalidate the cache every 10 minutes
   rounded_time <- reactive({
     invalidateLater(300000)
-    lubridate::round_date(Sys.time(), unit = "10 mins")
+    round_date(Sys.time(), unit = "10 mins")
   })
 
   birdnames <- birdnet_codes_v24 |>
