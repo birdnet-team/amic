@@ -66,9 +66,8 @@ mod_top10_birdnetpi_server <-
         req(data_reactive())
         data_reactive() |>
           count(species_name_common) |>
-          arrange(desc(n)) |>
-          slice(1:top_n) |>
-          mutate(species_level = letters[1:top_n])
+          slice_max(n, n = top_n) |>
+          mutate(species_level = letters[1:n()])
       })
 
 
