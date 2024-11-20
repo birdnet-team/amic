@@ -21,6 +21,15 @@ app_server <- function(input, output, session) {
   #   floor_date(unit = "day") |>
   #   with_tz("UTC")
 
+  # Create a vector with start and endtime of the last 24h rounded up to the next hour
+  this_hour <- Sys.time() |> with_tz("UTC") |> ceiling_date(unit = "hour")
+  last_24h <- c(
+    start_datetime = this_hour - days(1),
+    end_datetime = this_hour + hours(1)
+  )
+  # Set the class to POSIXct to preserve datetime format
+  class(last_24h) <- c("POSIXct", "POSIXt")
+
   # used to invalidate the cache every 10 minutes
   rounded_time <- reactive({
     invalidateLater(300000)
@@ -34,37 +43,59 @@ app_server <- function(input, output, session) {
       species_name_scientific = sciName
     )
 
+  recorder_species_count_template <-
+   tibble::tibble(
+      species_code = character(),
+      recorder_field_is = integer(),
+      species_count = integer()
+    )
+
   # Get and cache Data
   recorder_species_count_all <- reactive({
-    ecopiapi::get_recorderspeciescounts(
+    resp <- ecopiapi::get_recorderspeciescounts(
       project_name = project,
       start_date = "2020-01-01",
       min_confidence = min_confidence
-      ) |>
+      )
+    if (length(resp) == 0)
+      return(recorder_species_count_template)
+
+    resp |>
       left_join(birdnames)
   }) |>
     bindCache(rounded_time())
 
 
   recorder_species_count_today <- reactive({
-    ecopiapi::get_recorderspeciescounts(
+    resp <- ecopiapi::get_recorderspeciescounts(
       project_name = project,
       min_confidence = min_confidence
       # start_date by default set to today
-      ) |>
+      )
+
+    if (length(resp) == 0)
+      return(recorder_species_count_template)
+
+    resp |>
       left_join(birdnames)
   }) |>
     bindCache(rounded_time())
 
   detections_today <- reactive({
-    ecopiapi::get_detections(
+    resp <-
+      ecopiapi::get_detections(
       order_by = "-datetime",
       limit = "none",
       confidence__gte = min_confidence,
-      datetime__gte = Sys.Date() |> paste0("T00:00:00Z"),
+      datetime_recording__gte = last_24h["start_datetime"],
       only = c("species_code", "datetime"),
       project_name = project
-    ) |>
+    )
+
+    if (length(resp) == 0)
+      return(NULL)
+
+    resp |>
       left_join(birdnames)
   }) |>
     bindCache(rounded_time())
