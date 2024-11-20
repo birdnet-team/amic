@@ -16,7 +16,7 @@ Imports:
     config (>= 0.3.1),
     dplyr,
     echarts4r,
-    ecopiapi (>= 0.2.0),
+    ecopiapi (>= 0.2.3),
     golem (>= 0.4.1),
     hms,
     htmltools,
@@ -27,6 +27,7 @@ Imports:
     shiny (>= 1.8.1.1),
     shinyjs,
     suncalc,
+    tibble,
     tidyr
 Remotes: 
     OekoFor/ecopiapi@0.2.3
