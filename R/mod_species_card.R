@@ -13,7 +13,8 @@ mod_species_card_ui <- function(
     id,
     recorder_field_id,
     confidence,
-    datetime,
+    datetime_recording,
+    datetime_snippet,
     species_name_common,
     species_name_scientific,
     img_src,
@@ -62,7 +63,7 @@ mod_species_card_ui <- function(
             em(species_name_scientific, class = "text-muted")
           ),
           p(
-            format(strptime(datetime, "%Y-%m-%d %H:%M:%S"), "%d.%m.%y %R"),
+            format(strptime(datetime_snippet, "%Y-%m-%d %H:%M:%S"), "%d.%m.%y %R"),
             br(),
             paste0("Rekorder #", recorder_field_id),
             class = "text-muted"

@@ -22,7 +22,7 @@ app_server <- function(input, output, session) {
   #   with_tz("UTC")
 
   # Create a vector with start and endtime of the last 24h rounded up to the next hour
-  this_hour <- Sys.time() |> with_tz("UTC") |> ceiling_date(unit = "hour")
+  this_hour <- Sys.time() |> with_tz("CET") |> ceiling_date(unit = "hour")
   last_24h <- c(
     start_datetime = this_hour - days(1),
     end_datetime = this_hour + hours(1)
@@ -30,11 +30,6 @@ app_server <- function(input, output, session) {
   # Set the class to POSIXct to preserve datetime format
   class(last_24h) <- c("POSIXct", "POSIXt")
 
-  # used to invalidate the cache every 10 minutes
-  rounded_time <- reactive({
-    invalidateLater(300000)
-    round_date(Sys.time(), unit = "10 mins")
-  })
 
   birdnames <- birdnet_codes_v24 |>
     dplyr::select(
@@ -52,7 +47,7 @@ app_server <- function(input, output, session) {
 
   # Get and cache Data
   recorder_species_count_all <- reactive({
-    resp <- ecopiapi::get_recorderspeciescounts(
+    resp <- get_recorderspeciescounts(
       project_name = project,
       start_date = "2020-01-01",
       min_confidence = min_confidence
@@ -62,12 +57,11 @@ app_server <- function(input, output, session) {
 
     resp |>
       left_join(birdnames)
-  }) |>
-    bindCache(rounded_time())
+  })
 
 
   recorder_species_count_today <- reactive({
-    resp <- ecopiapi::get_recorderspeciescounts(
+    resp <- get_recorderspeciescounts(
       project_name = project,
       min_confidence = min_confidence
       # start_date by default set to today
@@ -78,27 +72,25 @@ app_server <- function(input, output, session) {
 
     resp |>
       left_join(birdnames)
-  }) |>
-    bindCache(rounded_time())
+  })
 
   detections_today <- reactive({
     resp <-
-      ecopiapi::get_detections(
+      get_detections(
       order_by = "-datetime",
       limit = "none",
       confidence__gte = min_confidence,
-      datetime_recording__gte = last_24h["start_datetime"],
+      datetime_recording__gte =  paste0(lubridate::today(), "T00:00:00"), # last_24h["start_datetime"],
       only = c("species_code", "datetime"),
       project_name = project
     )
 
-    if (length(resp) == 0)
+    if (length(resp) == 0 | is.null(resp))
       return(NULL)
 
     resp |>
       left_join(birdnames)
-  }) |>
-    bindCache(rounded_time())
+  })
 
   # Use nested modules for value boxes
   mod_value_box_server("box_today", recorder_species_count_today, "Alle Erkennungen Heute")

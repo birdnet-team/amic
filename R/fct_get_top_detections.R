@@ -11,29 +11,29 @@
 #' @return A data frame of the top detections with audio for the specified project.
 #'
 #' @examples
-#' get_top_detection("049_bremgarten", n = 4)
+#' get_top_detection("pam_in_chemnitz", n = 4)
 #'
-#' @importFrom ecopiapi get_detections
-#' @importFrom dplyr group_by arrange desc slice ungroup slice_sample
+#' @import dplyr lubridate
 #' @noRd
 get_top_detection <- function(project, n) {
 
-  detections_with_audio <- ecopiapi::get_detections(
+  detections_with_audio <- get_detections(
     order_by = "-datetime",
     limit = 1000,
     confidence__gte = 0.99,
     has_audio = TRUE,
-    only = c("recorder_field_id", "species_code", "datetime", "confidence", "url_media"),
+    only = c("recorder_field_id", "species_code", "datetime_recording", "start" ,"confidence", "url_media"),
     project_name = project
   )
 
 
   detections_with_audio |>
-    dplyr::filter(species_code != "image") |>
-    dplyr::group_by(species_code) |>
-    dplyr::arrange(desc(datetime), desc(confidence)) |>
-    dplyr::slice(1) |>
-    dplyr::ungroup() |>
-    dplyr::slice_sample(n = {{n}})
+    filter(species_code != "image") |>
+    mutate(datetime_snippet = ymd_hms(datetime_recording) + seconds(start)) |>
+    group_by(species_code) |>
+    arrange(desc(datetime_recording), desc(confidence)) |>
+    slice(1) |>
+    ungroup() |>
+    slice_sample(n = {{n}})
 }
 
