@@ -8,3 +8,5 @@ $run_dev.*
 ^README\.Rmd$
 ^app\.R$
 ^rsconnect$
+^Dockerfile$
+^\.dockerignore$
