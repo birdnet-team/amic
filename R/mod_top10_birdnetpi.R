@@ -11,21 +11,25 @@
 mod_top10_birdnetpi_ui <- function(id) {
   ns <- NS(id)
   tagList(
-    card(
-      card_title("Aktivität der häufigsten Arten", container = htmltools::h3),
-      min_height = 450,
-      layout_columns(
-        col_widths = c(5, 7),
-        min_height = 300,
-        echarts4rOutput(
-          ns("barchart"),
-          width = "100%",
-          height = "100%"
-        ),
-        echarts4rOutput(
-          ns("activity_heatmap"),
-          width = "100%",
-          height = "100%"
+    conditionalPanel(
+      ns = ns,
+      condition = "output.has_data",
+      card(
+        card_title("Aktivität der häufigsten Arten", container = htmltools::h3),
+        min_height = 450,
+        layout_columns(
+          col_widths = c(5, 7),
+          min_height = 300,
+          echarts4rOutput(
+            ns("barchart"),
+            width = "100%",
+            height = "100%"
+          ),
+          echarts4rOutput(
+            ns("activity_heatmap"),
+            width = "100%",
+            height = "100%"
+          )
         )
       )
     )
@@ -39,6 +43,13 @@ mod_top10_birdnetpi_server <-
   function(id, data_reactive, top_n = 10) {
     moduleServer(id, function(input, output, session) {
       ns <- session$ns
+
+      # Reactive check for whether data is available
+      output$has_data <- reactive({
+        # req(data_reactive())
+        isTruthy(data_reactive())
+      })
+      outputOptions(output, "has_data", suspendWhenHidden = FALSE)
 
       symbol_moon <-
         "path://M6 .278a.77.77 0 0 1 .08.858 7.2 7.2 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277q.792-.001 1.533-.16a.79.79 0 0 1 .81.316.73.73 0 0 1-.031.893A8.35 8.35 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.75.75 0 0 1 6 .278"
@@ -120,15 +131,16 @@ mod_top10_birdnetpi_server <-
       output$barchart <- renderEcharts4r({
         req(top_dets_per_species())
         top_dets_per_species() |>
+          mutate(label = paste0(species_name_common, " ", "(", n, ")")) |>
           e_charts(n) |>
           e_bar(
-            species_name_common,
+            label,
             legend = FALSE,
             label = list(show = TRUE, position = c(-1, 0), formatter = "{b}", color = "black"),
-            itemStyle = list(color = "#90000000")
+            itemStyle = list(color = "rgba(0, 0, 0, 0)")
           ) |>
           e_bar(
-            species_name_common,
+            label,
             legend = FALSE,
             label = list(show = FALSE),
             itemStyle = list(borderRadius = c(0,10,10,0)),
@@ -137,6 +149,7 @@ mod_top10_birdnetpi_server <-
           e_x_axis_(
             type = "value",
             max = "max",
+            min = 0,
             position = "top",
             splitArea = list(show = TRUE),
             axisLine = list(show = FALSE),
