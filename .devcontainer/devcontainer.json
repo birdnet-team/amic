@@ -1,0 +1,4 @@
+{
+    "build": { "dockerfile": "Dockerfile" },
+    "postCreateCommand": "R -e \"pak::local_install('$APP_DIR')\""
+}

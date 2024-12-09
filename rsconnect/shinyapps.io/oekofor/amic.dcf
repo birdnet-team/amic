@@ -5,9 +5,8 @@ account: oekofor
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 12144258
-bundleId: 8726596
+bundleId: 9402110
 url: https://oekofor.shinyapps.io/amic/
-when: 1718096652.47601
-lastSyncTime: 1718096652.47602
 asMultiple: FALSE
 asStatic: FALSE
+ignoredFiles: _other/_echarts_playground.R|_other/adjusted_times_mod_top10_birdnetpi.R|_other/test.R|.devcontainer/devcontainer.json|.Rbuildignore|dev/01_start.R|dev/02_dev.R|dev/03_deploy.R|LICENSE.md|README.md|README.Rmd|man

@@ -1,0 +1,13 @@
+name: amic
+title: amic
+username: birdnet
+account: birdnet
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 13399509
+bundleId:
+url: https://birdnet.shinyapps.io/amic/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: _other/_echarts_playground.R|_other/adjusted_times_mod_top10_birdnetpi.R|_other/test.R
