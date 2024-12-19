@@ -61,11 +61,7 @@ Conservation Bioacoustics is made possible by the generosity of K. Lisa
 Yang to advance innovative conservation technologies to inspire and
 inform the conservation of wildlife and habitats.
 
-The German Federal Ministry of Education and Research is funding the
-development of BirdNET through the project “BirdNET+” (FKZ 01\|S22072).
-Additionally, the German Federal Ministry of Environment, Nature
-Conservation and Nuclear Safety is funding the development of BirdNET
-through the project “DeepBirdDetect” (FKZ 67KI31040E).
+The development of BirdNET is supported by the German Federal Ministry of Education and Research through the project “BirdNET+” (FKZ 01|S22072). The German Federal Ministry for the Environment, Nature Conservation and Nuclear Safety contributes through the “DeepBirdDetect” project (FKZ 67KI31040E). In addition, the Deutsche Bundesstiftung Umwelt supports BirdNET through the project “RangerSound” (project 39263/01).
 
 ## Partners
 
