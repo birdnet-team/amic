@@ -25,7 +25,7 @@ BirdNET, a collaborative initiative between Chemnitz University of
 Technology and the K. Lisa Yang Center for Conservation Bioacoustics.
 BirdNET identifies bird species while filtering out human-made sounds.
 The results are available to the public on a [project
-website](birdnet.tu-chemnitz.de/link/botanischergarten), where the
+website](https://birdnet.tu-chemnitz.de/link/botanischergarten), where the
 sounds of some of the recognized species can be heard. This repository
 contains the code for the Shiny App, which powers the project website.
 
@@ -36,7 +36,7 @@ Chemnitz University of Technology, and OekoFor.
 
 The project website (designed for mobile devices) can be accessed via
 the following link: [AMIC project
-website](birdnet.tu-chemnitz.de/link/botanischergarten)
+website](https://birdnet.tu-chemnitz.de/link/botanischergarten)
 
 ## License
 
